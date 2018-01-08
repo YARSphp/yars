@@ -2,8 +2,11 @@
 
 namespace Yars;
 
+use Yars\methods\Any;
 use Yars\methods\Delete;
 use Yars\methods\Get;
+use Yars\methods\Options;
+use Yars\methods\Patch;
 use Yars\methods\Post;
 use Yars\methods\Put;
 
@@ -57,17 +60,23 @@ class FileTree {
 
 			$ns    = $data["namespace"] . "\\" . str_replace("/", "\\", $file);
 			$class = new $ns();
-			if ($class instanceof Get) {
+			if ($class instanceof Get || $class instanceof Any) {
 				$node->methods[] = "get";
 			}
-			if ($class instanceof Post) {
+			if ($class instanceof Post || $class instanceof Any) {
 				$node->methods[] = "post";
 			}
-			if ($class instanceof Put) {
+			if ($class instanceof Put || $class instanceof Any) {
 				$node->methods[] = "put";
 			}
-			if ($class instanceof Delete) {
+			if ($class instanceof Delete || $class instanceof Any) {
 				$node->methods[] = "delete";
+			}
+			if ($class instanceof Patch || $class instanceof Any) {
+				$node->methods[] = "patch";
+			}
+			if ($class instanceof Options || $class instanceof Any) {
+				$node->methods[] = "options";
 			}
 			$current = $root;
 
